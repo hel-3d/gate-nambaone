@@ -1,0 +1,37 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: gate-nambaone
+
+    environment:
+      WEB_SERVICE_HOST: "0.0.0.0"
+      WEB_SERVICE_PORT: "8000"
+      LOG_LEVEL: "info"
+      DEBUG: "false"
+      REQUEST_TIMEOUT: "15"
+
+      NAMBAONE_BASE_URL: "${NAMBAONE_BASE_URL:-https://merchant-api.example}"
+      NAMBAONE_MERCHANT_ID: "${NAMBAONE_MERCHANT_ID:-}"
+      NAMBAONE_SECRET: "${NAMBAONE_SECRET:-}"
+      NAMBAONE_CALLBACK_URL: "${NAMBAONE_CALLBACK_URL:-http://localhost:8000/notifications/invoice}"
+
+    ports:
+      - "${WEB_SERVICE_PORT:-8000}:8000"
+
+    restart: unless-stopped
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://localhost:8000/v2/ping')"
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
