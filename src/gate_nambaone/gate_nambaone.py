@@ -36,9 +36,10 @@ PROVIDER_EXCEPTIONS = (
 class GateNambaOne:
     def __init__(
         self,
-        http_client: httpx.AsyncClient,
+        httpx_client: httpx.AsyncClient,
+        **_: Any,
     ) -> None:
-        self.http_client = http_client
+        self.http_client = httpx_client
 
     @staticmethod
     def _parse_terminal_data(
@@ -352,6 +353,6 @@ class GateNambaOne:
 
 
 def get_gate_nambaone(
-    http_client: httpx.AsyncClient,
+    **kwargs: Any,
 ) -> GateNambaOne:
-    return GateNambaOne(http_client=http_client)
+    return GateNambaOne(**kwargs)

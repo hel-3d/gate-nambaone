@@ -35,4 +35,6 @@ async def http_client() -> AsyncIterator[httpx.AsyncClient]:
 def gate(
     http_client: httpx.AsyncClient,
 ) -> GateNambaOne:
-    return GateNambaOne(http_client=http_client)
+    return GateNambaOne(
+        httpx_client=http_client,
+    )
